@@ -1,14 +1,79 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+session_start();
+
+require_once "config/database.php";
+require_once "includes/auth.php";
+
+protegerPagina();
+
 $tituloPagina = "Editar Tarefa";
+
+$user_id = $_SESSION["user_id"];
+$id = $_GET["id"] ?? 0;
+$erro = "";
+
+$sql = "SELECT * FROM tasks WHERE id = ? AND user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $id, $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    header("Location: tarefas.php");
+    exit();
+}
+
+$task = $result->fetch_assoc();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $titulo = trim($_POST["titulo"] ?? "");
+    $descricao = trim($_POST["descricao"] ?? "");
+    $status = $_POST["status"] ?? "pendente";
+    $data_limite = $_POST["data_limite"] ?? null;
+
+    if ($data_limite === "") {
+        $data_limite = null;
+    }
+
+    if ($titulo === "") {
+        $erro = "O título da tarefa é obrigatório.";
+    } else {
+
+        $sql = "UPDATE tasks 
+                SET titulo = ?, descricao = ?, status = ?, data_limite = ?
+                WHERE id = ? AND user_id = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param(
+            "ssssii",
+            $titulo,
+            $descricao,
+            $status,
+            $data_limite,
+            $id,
+            $user_id
+        );
+
+        if ($stmt->execute()) {
+            header("Location: tarefas.php?sucesso=Tarefa atualizada");
+            exit();
+        } else {
+            $erro = "Erro ao atualizar tarefa.";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt">
 
 <head>
-
     <meta charset="UTF-8">
-
     <title>Editar Tarefa</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -18,119 +83,113 @@ $tituloPagina = "Editar Tarefa";
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/forms.css">
     <link rel="stylesheet" href="css/responsive.css">
-
 </head>
 
 <body>
 
 <div class="app">
 
-<?php include "includes/sidebar.php"; ?>
+    <?php include "includes/sidebar.php"; ?>
 
-<main class="main">
+    <main class="main">
 
-<?php include "includes/header.php"; ?>
+        <?php include "includes/header.php"; ?>
 
-<section class="form-page">
+        <section class="form-page">
 
-<div class="form-card card">
+            <div class="form-card card">
 
-<div class="form-title">
+                <div class="form-title">
+                    <h1>Editar Tarefa</h1>
+                    <p>Atualiza os dados da tarefa selecionada.</p>
+                </div>
 
-<h1>Editar Tarefa</h1>
+                <?php if ($erro): ?>
+                    <div class="alert-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <?php echo htmlspecialchars($erro); ?>
+                    </div>
+                <?php endif; ?>
 
-<p>Atualiza os dados da tarefa.</p>
+                <form method="POST">
 
-</div>
+                    <div class="form-group">
+                        <label>Título</label>
 
-<form action="#" method="POST">
+                        <input
+                            class="input"
+                            type="text"
+                            name="titulo"
+                            value="<?php echo htmlspecialchars($task["titulo"]); ?>"
+                            required>
+                    </div>
 
-<div class="form-group">
+                    <div class="form-group">
+                        <label>Descrição</label>
 
-<label>Título</label>
+                        <textarea
+                            class="textarea"
+                            name="descricao"
+                            rows="5"><?php echo htmlspecialchars($task["descricao"]); ?></textarea>
+                    </div>
 
-<input
-class="input"
-type="text"
-value="Atualizar Website">
+                    <div class="form-row">
 
-</div>
+                        <div class="form-group">
+                            <label>Estado</label>
 
-<div class="form-group">
+                            <select class="select" name="status">
+                                <option value="pendente" <?php echo $task["status"] === "pendente" ? "selected" : ""; ?>>
+                                    Por Fazer
+                                </option>
 
-<label>Descrição</label>
+                                <option value="em_andamento" <?php echo $task["status"] === "em_andamento" ? "selected" : ""; ?>>
+                                    Em Curso
+                                </option>
 
-<textarea
-class="textarea"
-rows="5">Melhorar a página inicial e corrigir erros.</textarea>
+                                <option value="concluida" <?php echo $task["status"] === "concluida" ? "selected" : ""; ?>>
+                                    Concluída
+                                </option>
+                            </select>
+                        </div>
 
-</div>
+                        <div class="form-group">
+                            <label>Data Limite</label>
 
-<div class="form-row">
+                            <input
+                                class="input"
+                                type="date"
+                                name="data_limite"
+                                value="<?php echo htmlspecialchars($task["data_limite"]); ?>">
+                        </div>
 
-<div class="form-group">
+                    </div>
 
-<label>Estado</label>
+                    <div class="form-actions">
 
-<select class="select">
+                        <a href="tarefas.php" class="btn btn-secondary">
+                            Cancelar
+                        </a>
 
-<option>Por Fazer</option>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Guardar Alterações
+                        </button>
 
-<option selected>Em Curso</option>
+                    </div>
 
-<option>Concluída</option>
+                </form>
 
-</select>
+            </div>
 
-</div>
+        </section>
 
-<div class="form-group">
+        <?php include "includes/footer.php"; ?>
 
-<label>Data Limite</label>
-
-<input
-class="input"
-type="date"
-value="2026-06-28">
-
-</div>
-
-</div>
-
-<div class="form-actions">
-
-<a
-href="tarefas.php"
-class="btn btn-secondary">
-
-Cancelar
-
-</a>
-
-<button
-class="btn btn-primary">
-
-<i class="fa-solid fa-floppy-disk"></i>
-
-Guardar Alterações
-
-</button>
-
-</div>
-
-</form>
-
-</div>
-
-</section>
-
-<?php include "includes/footer.php"; ?>
-
-</main>
+    </main>
 
 </div>
 
 <script src="js/menu.js"></script>
 </body>
-
 </html>

@@ -1,5 +1,23 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+session_start();
+
+require_once "config/database.php";
+require_once "includes/auth.php";
+
+protegerPagina();
+
 $tituloPagina = "Tarefas";
+$user_id = $_SESSION["user_id"];
+
+$sql = "SELECT * FROM tasks WHERE user_id = ? ORDER BY criado_em DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$tarefas = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -9,11 +27,8 @@ $tituloPagina = "Tarefas";
     <meta charset="UTF-8">
     <title>Tarefas</title>
 
-    <script src="js/app.js"></script>
-    <script src="js/filtros.js"></script>
-    <script src="js/animacoes.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -65,86 +80,127 @@ $tituloPagina = "Tarefas";
 
             <div class="tasks-list">
 
-                <article class="card task-item">
+                <?php if ($tarefas->num_rows > 0): ?>
 
-                    <div class="task-left">
-                        <div class="task-check"></div>
+                    <?php while ($task = $tarefas->fetch_assoc()): ?>
 
-                        <div class="task-info">
-                            <h3>Atualizar Website</h3>
-                            <p>Melhorar a página inicial e corrigir erros visuais.</p>
+                        <?php
+                        $hoje = date("Y-m-d");
+
+                        $atrasada = (
+                            !empty($task["data_limite"]) &&
+                            $task["data_limite"] < $hoje &&
+                            $task["status"] !== "concluida"
+                        );
+
+                        $badgeClasse = "todo";
+                        $badgeTexto = "Por Fazer";
+
+                        if ($task["status"] === "em_andamento") {
+                            $badgeClasse = "progress";
+                            $badgeTexto = "Em Curso";
+                        } elseif ($task["status"] === "concluida") {
+                            $badgeClasse = "done";
+                            $badgeTexto = "Concluída";
+                        }
+
+                        if ($atrasada) {
+                            $badgeClasse = "late";
+                            $badgeTexto = "Atrasada";
+                        }
+                        ?>
+
+                        <article class="card task-item">
+
+                            <div class="task-left">
+
+                                <div class="task-check <?php echo $task["status"] === "concluida" ? "checked" : ""; ?>"></div>
+
+                                <div class="task-info">
+                                    <h3><?php echo htmlspecialchars($task["titulo"]); ?></h3>
+
+                                    <?php if (!empty($task["descricao"])): ?>
+                                        <p><?php echo htmlspecialchars($task["descricao"]); ?></p>
+                                    <?php endif; ?>
+                                </div>
+
+                            </div>
+
+                            <div class="task-right">
+
+                                <span class="badge <?php echo $badgeClasse; ?>">
+                                    <?php echo $badgeTexto; ?>
+                                </span>
+
+                                <?php if (!empty($task["data_limite"])): ?>
+                                    <span class="task-date <?php echo $atrasada ? "overdue" : ""; ?>">
+                                        <i class="fa-regular fa-calendar"></i>
+                                        <?php echo date("d/m/Y", strtotime($task["data_limite"])); ?>
+                                    </span>
+                                <?php endif; ?>
+
+                                <?php if ($task["status"] !== "concluida"): ?>
+                                    <a
+                                        href="tarefas/concluir.php?id=<?php echo $task["id"]; ?>"
+                                        class="btn btn-secondary"
+                                        onclick="return confirm('Marcar esta tarefa como concluída?')">
+
+                                        <i class="fa-solid fa-check"></i>
+                                        Concluir
+
+                                    </a>
+                                <?php endif; ?>
+
+                                <a
+                                    href="editar_tarefa.php?id=<?php echo $task["id"]; ?>"
+                                    class="btn btn-secondary">
+
+                                    <i class="fa-solid fa-pen"></i>
+                                    Editar
+
+                                </a>
+
+                                <a
+                                    href="tarefas/apagar.php?id=<?php echo $task["id"]; ?>"
+                                    class="btn btn-danger"
+                                    onclick="return confirm('Tens a certeza que queres apagar esta tarefa?')">
+
+                                    <i class="fa-solid fa-trash"></i>
+                                    Apagar
+
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    <?php endwhile; ?>
+
+                <?php else: ?>
+
+                    <article class="card task-item">
+
+                        <div class="task-left">
+
+                            <div class="task-info">
+                                <h3>Nenhuma tarefa encontrada</h3>
+                                <p>Começa por criar a tua primeira tarefa.</p>
+                            </div>
+
                         </div>
-                    </div>
 
-                    <div class="task-right">
-                        <span class="badge progress">Em Curso</span>
-                        <span class="task-date">
-                            <i class="fa-regular fa-calendar"></i>
-                            28/06/2026
-                        </span>
-                        <a href="editar_tarefa.php" class="btn btn-secondary">
-                            Editar
-                        </a>
-                        <button class="btn btn-danger">
-                            Apagar
-                        </button>
-                    </div>
+                        <div class="task-right">
 
-                </article>
+                            <a href="nova_tarefa.php" class="btn btn-primary">
+                                <i class="fa-solid fa-plus"></i>
+                                Criar Tarefa
+                            </a>
 
-                <article class="card task-item">
-
-                    <div class="task-left">
-                        <div class="task-check"></div>
-
-                        <div class="task-info">
-                            <h3>Fazer backup dos ficheiros</h3>
-                            <p>Guardar uma cópia dos ficheiros importantes.</p>
                         </div>
-                    </div>
 
-                    <div class="task-right">
-                        <span class="badge late">Atrasada</span>
-                        <span class="task-date">
-                            <i class="fa-regular fa-calendar"></i>
-                            20/06/2026
-                        </span>
-                        <a href="editar_tarefa.php" class="btn btn-secondary">
-                            Editar
-                        </a>
-                        <button class="btn btn-danger">
-                            Apagar
-                        </button>
-                    </div>
+                    </article>
 
-                </article>
-
-                <article class="card task-item">
-
-                    <div class="task-left">
-                        <div class="task-check checked"></div>
-
-                        <div class="task-info">
-                            <h3>Entregar relatório</h3>
-                            <p>Relatório final do projeto de estágio.</p>
-                        </div>
-                    </div>
-
-                    <div class="task-right">
-                        <span class="badge done">Concluída</span>
-                        <span class="task-date">
-                            <i class="fa-regular fa-calendar"></i>
-                            26/06/2026
-                        </span>
-                        <a href="editar_tarefa.php" class="btn btn-secondary">
-                            Editar
-                        </a>
-                        <button class="btn btn-danger">
-                            Apagar
-                        </button>
-                    </div>
-
-                </article>
+                <?php endif; ?>
 
             </div>
 

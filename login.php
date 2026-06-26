@@ -1,3 +1,55 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+session_start();
+
+require_once "config/database.php";
+require_once "includes/auth.php";
+
+redirecionarSeLogado();
+
+$erro = "";
+$email = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $email = trim($_POST["email"] ?? "");
+    $senha = $_POST["senha"] ?? "";
+
+    if ($email === "" || $senha === "") {
+        $erro = "Por favor, preenche todos os campos.";
+    } else {
+
+        $sql = "SELECT id, nome, email, senha FROM users WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($user = $result->fetch_assoc()) {
+
+            if (password_verify($senha, $user["senha"])) {
+
+                $_SESSION["user_id"] = $user["id"];
+                $_SESSION["nome"] = $user["nome"];
+                $_SESSION["email"] = $user["email"];
+
+                header("Location: dashboard.php");
+                exit();
+
+            } else {
+                $erro = "Email ou palavra-passe inválidos.";
+            }
+
+        } else {
+            $erro = "Email ou palavra-passe inválidos.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -25,16 +77,36 @@
             <p>Inicia sessão para continuares.</p>
         </div>
 
-        <form action="auth/login_processar.php" method="POST">
+        <?php if ($erro): ?>
+            <div class="alert-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <?php echo htmlspecialchars($erro); ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST">
 
             <div class="form-group">
                 <label>Email</label>
-                <input class="input" type="email" name="email" placeholder="exemplo@email.com" required>
+
+                <input
+                    class="input"
+                    type="email"
+                    name="email"
+                    placeholder="exemplo@email.com"
+                    value="<?php echo htmlspecialchars($email); ?>"
+                    required>
             </div>
 
             <div class="form-group">
                 <label>Palavra-passe</label>
-                <input class="input" type="password" name="password" placeholder="••••••••" required>
+
+                <input
+                    class="input"
+                    type="password"
+                    name="senha"
+                    placeholder="••••••••"
+                    required>
             </div>
 
             <button type="submit" class="btn btn-primary full-btn">
@@ -45,7 +117,7 @@
 
         <p class="auth-link">
             Ainda não tens conta?
-            <a href="registo.php">Criar conta</a>
+            <a href="register.php">Criar conta</a>
         </p>
 
     </div>
