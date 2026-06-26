@@ -1,0 +1,125 @@
+.dashboard{
+    padding:28px 32px;
+}
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.page-header h1{
+    font-size:26px;
+    font-weight:800;
+}
+
+.page-header p{
+    color:var(--gray-500);
+    margin-top:4px;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:28px;
+}
+
+.stat-card{
+    position:relative;
+    overflow:hidden;
+    padding:24px;
+    border-radius:20px;
+    background:var(--white);
+    border:1px solid var(--gray-200);
+    box-shadow:var(--shadow);
+    transition:var(--transition);
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--shadow-lg);
+}
+
+.stat-card::after{
+    content:"";
+    position:absolute;
+    right:-25px;
+    top:-25px;
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:rgba(123,63,252,.08);
+}
+
+.stat-label{
+    color:var(--gray-500);
+    font-size:13px;
+    font-weight:600;
+}
+
+.stat-value{
+    font-size:42px;
+    font-weight:800;
+    margin-top:10px;
+}
+
+.stat-value.purple{color:var(--primary);}
+.stat-value.green{color:var(--success);}
+.stat-value.yellow{color:var(--warning);}
+.stat-value.red{color:var(--danger);}
+
+.tasks-section{
+    margin-top:28px;
+}
+
+.section-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.section-top h2{
+    font-size:20px;
+}
+
+.section-top a{
+    color:var(--primary);
+    font-weight:700;
+}
+
+.task-item{
+    transition:var(--transition);
+}
+
+.task-item:hover{
+    transform:translateX(8px);
+}
+
+.stat-card .stat-label::before{
+    font-family:"Font Awesome 6 Free";
+    font-weight:900;
+    margin-right:8px;
+    color:var(--primary);
+}
+
+.stat-card:nth-child(1) .stat-label::before{
+    content:"\f0ae";
+}
+
+.stat-card:nth-child(2) .stat-label::before{
+    content:"\f017";
+    color:var(--warning);
+}
+
+.stat-card:nth-child(3) .stat-label::before{
+    content:"\f110";
+    color:var(--info);
+}
+
+.stat-card:nth-child(4) .stat-label::before{
+    content:"\f00c";
+    color:var(--success);
+}
