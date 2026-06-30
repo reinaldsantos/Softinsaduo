@@ -16,6 +16,7 @@ $user_id = $_SESSION["user_id"];
 $erro = "";
 $sucesso = "";
 
+// Buscar os dados do utilizador
 $sql = "SELECT id, nome, email FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -29,6 +30,7 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
+// Atualizar perfil
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $nome = trim($_POST["nome"] ?? "");
@@ -37,25 +39,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $confirmar_senha = $_POST["confirmar_senha"] ?? "";
 
     if ($nome === "" || $email === "") {
+
         $erro = "O nome e o email são obrigatórios.";
+
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+
         $erro = "Insere um email válido.";
-    } elseif ($nova_senha !== "" && strlen($nova_senha) < 6) {
-        $erro = "A nova palavra-passe deve ter pelo menos 6 caracteres.";
-    } elseif ($nova_senha !== $confirmar_senha) {
+
+    } elseif ($nova_senha != "" && strlen($nova_senha) < 6) {
+
+        $erro = "A palavra-passe deve ter pelo menos 6 caracteres.";
+
+    } elseif ($nova_senha != $confirmar_senha) {
+
         $erro = "As palavras-passe não coincidem.";
+
     } else {
 
-        if ($nova_senha !== "") {
+        if ($nova_senha != "") {
+
             $senha_hash = password_hash($nova_senha, PASSWORD_DEFAULT);
 
-            $sql = "UPDATE users SET nome = ?, email = ?, senha = ? WHERE id = ?";
+            $sql = "UPDATE users SET nome=?, email=?, senha=? WHERE id=?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("sssi", $nome, $email, $senha_hash, $user_id);
+
         } else {
-            $sql = "UPDATE users SET nome = ?, email = ? WHERE id = ?";
+
+            $sql = "UPDATE users SET nome=?, email=? WHERE id=?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssi", $nome, $email, $user_id);
+
         }
 
         if ($stmt->execute()) {
@@ -63,10 +77,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["nome"] = $nome;
             $_SESSION["email"] = $email;
 
+            $user["nome"] = $nome;
+            $user["email"] = $email;
+
             $sucesso = "Perfil atualizado com sucesso.";
 
         } else {
-            $erro = "Erro ao atualizar perfil.";
+
+            $erro = "Erro ao atualizar o perfil.";
+
         }
     }
 }
@@ -76,6 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="pt">
 
 <head>
+
     <meta charset="UTF-8">
     <title>Perfil</title>
 
@@ -86,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/forms.css">
     <link rel="stylesheet" href="css/responsive.css">
+
 </head>
 
 <body>
@@ -121,32 +142,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" autocomplete="off">
+                <form method="POST">
 
                     <div class="form-row">
 
                         <div class="form-group">
+
                             <label>Nome</label>
+
                             <input
                                 class="input"
                                 type="text"
                                 name="nome"
-                                value=""
-                                placeholder="Escreva o seu nome"
-                                autocomplete="off"
+                                value="<?php echo htmlspecialchars($user["nome"]); ?>"
                                 required>
+
                         </div>
 
                         <div class="form-group">
+
                             <label>Email</label>
+
                             <input
                                 class="input"
                                 type="email"
                                 name="email"
-                                value=""
-                                placeholder="Escreva o seu email"
-                                autocomplete="off"
+                                value="<?php echo htmlspecialchars($user["email"]); ?>"
                                 required>
+
                         </div>
 
                     </div>
@@ -154,28 +177,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="form-row">
 
                         <div class="form-group">
+
                             <label>Nova Palavra-passe</label>
+
                             <input
                                 class="input"
                                 type="password"
                                 name="nova_senha"
-                                placeholder="Nova palavra-passe"
-                                autocomplete="new-password">
+                                placeholder="Nova palavra-passe">
+
                         </div>
 
                         <div class="form-group">
+
                             <label>Confirmar Palavra-passe</label>
+
                             <input
                                 class="input"
                                 type="password"
                                 name="confirmar_senha"
-                                placeholder="Confirmar palavra-passe"
-                                autocomplete="new-password">
+                                placeholder="Confirmar palavra-passe">
+
                         </div>
 
                     </div>
 
                     <div class="form-actions">
+
                         <a href="dashboard.php" class="btn btn-secondary">
                             Cancelar
                         </a>
@@ -184,6 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <i class="fa-solid fa-floppy-disk"></i>
                             Guardar Alterações
                         </button>
+
                     </div>
 
                 </form>
@@ -199,5 +228,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </div>
 
 <script src="js/menu.js"></script>
+
 </body>
 </html>
