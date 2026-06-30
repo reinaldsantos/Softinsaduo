@@ -12,6 +12,7 @@ protegerPagina();
 $tituloPagina = "Perfil";
 
 $user_id = $_SESSION["user_id"];
+
 $erro = "";
 $sucesso = "";
 
@@ -58,13 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         if ($stmt->execute()) {
+
             $_SESSION["nome"] = $nome;
             $_SESSION["email"] = $email;
 
             $sucesso = "Perfil atualizado com sucesso.";
 
-            $user["nome"] = $nome;
-            $user["email"] = $email;
         } else {
             $erro = "Erro ao atualizar perfil.";
         }
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 <?php endif; ?>
 
-                <form method="POST">
+                <form method="POST" autocomplete="off">
 
                     <div class="form-row">
 
@@ -131,7 +131,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 class="input"
                                 type="text"
                                 name="nome"
-                                value="<?php echo htmlspecialchars($user["nome"]); ?>"
+                                value=""
+                                placeholder="Escreva o seu nome"
+                                autocomplete="off"
                                 required>
                         </div>
 
@@ -141,7 +143,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 class="input"
                                 type="email"
                                 name="email"
-                                value="<?php echo htmlspecialchars($user["email"]); ?>"
+                                value=""
+                                placeholder="Escreva o seu email"
+                                autocomplete="off"
                                 required>
                         </div>
 
@@ -155,7 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 class="input"
                                 type="password"
                                 name="nova_senha"
-                                placeholder="Nova palavra-passe">
+                                placeholder="Nova palavra-passe"
+                                autocomplete="new-password">
                         </div>
 
                         <div class="form-group">
@@ -164,13 +169,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 class="input"
                                 type="password"
                                 name="confirmar_senha"
-                                placeholder="Confirmar palavra-passe">
+                                placeholder="Confirmar palavra-passe"
+                                autocomplete="new-password">
                         </div>
 
                     </div>
 
                     <div class="form-actions">
-                        <a href="dashboard.php" class="btn btn-secondary">Cancelar</a>
+                        <a href="dashboard.php" class="btn btn-secondary">
+                            Cancelar
+                        </a>
 
                         <button type="submit" class="btn btn-primary">
                             <i class="fa-solid fa-floppy-disk"></i>
