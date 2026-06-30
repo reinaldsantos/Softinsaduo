@@ -199,5 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </div>
 
 <script src="js/menu.js"></script>
+
 </body>
 </html>
