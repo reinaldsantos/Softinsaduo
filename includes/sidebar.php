@@ -37,7 +37,7 @@
             <span>Perfil</span>
         </a>
 
-        <a href="#">
+        <a href="definicoes.php" class="<?php echo (($tituloPagina ?? '') == 'Definições') ? 'active' : ''; ?>">
             <i class="fa-solid fa-gear"></i>
             <span>Definições</span>
         </a>
