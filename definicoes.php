@@ -32,8 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 
-<script src="js/tema.js"></script>
-
 <body>
 
 <div class="app">
@@ -184,6 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 </div>
 
+<script src="js/tema.js"></script>
 <script src="js/menu.js"></script>
 </body>
 </html>
