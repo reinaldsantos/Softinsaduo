@@ -185,3 +185,50 @@ ul{
     }
 
 }
+
+body.dark-mode{
+    background:#0f172a;
+    color:#e5e7eb;
+}
+
+body.dark-mode .main,
+body.dark-mode .dashboard,
+body.dark-mode .form-page,
+body.dark-mode .tasks-page{
+    background:#0f172a;
+}
+
+body.dark-mode .sidebar,
+body.dark-mode .header,
+body.dark-mode .card,
+body.dark-mode .form-card,
+body.dark-mode .task-item,
+body.dark-mode .stat-card{
+    background:#111827;
+    color:#e5e7eb;
+    border-color:#334155;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode label,
+body.dark-mode .breadcrumb strong{
+    color:#f9fafb;
+}
+
+body.dark-mode p,
+body.dark-mode .breadcrumb,
+body.dark-mode .form-title p,
+body.dark-mode .task-info p{
+    color:#9ca3af;
+}
+
+body.dark-mode .input,
+body.dark-mode .textarea,
+body.dark-mode .select,
+body.dark-mode .search-box{
+    background:#1f2937;
+    color:#f9fafb;
+    border-color:#334155;
+}
