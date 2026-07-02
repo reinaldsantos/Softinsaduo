@@ -486,6 +486,7 @@ if (!file_exists($avatar_atual)) {
 </div>
 
 <script src="js/menu.js"></script>
+<<<<<<< HEAD
 
 <script>
     function mostrarTab(tab) {
@@ -578,5 +579,8 @@ if (!file_exists($avatar_atual)) {
     }
 </script>
 
+=======
+<script src="js/tema.js"></script>
+>>>>>>> e856374b3a367b56a6c5dec66055a7da2ce85978
 </body>
 </html>

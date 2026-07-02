@@ -213,5 +213,6 @@ $tarefas = $stmt->get_result();
 </div>
 
 <script src="js/menu.js"></script>
+<script src="js/tema.js"></script>
 </body>
 </html>

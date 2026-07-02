@@ -121,3 +121,40 @@
     align-items:center;
     gap:8px;
 }
+
+.settings-section{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:24px;
+}
+
+body.dark-mode .settings-section{
+    background:#111827;
+    border-color:#374151;
+}
+
+.settings-section h3{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:24px;
+    margin-bottom:18px;
+}
+
+.settings-section .form-group{
+    margin-bottom:18px;
+}
+
+.settings-section:last-child{
+    margin-bottom:0;
+}
+
+.settings-section .btn{
+    margin-right:10px;
+}
+
+.danger-zone{
+    border:2px solid #ef4444;
+}

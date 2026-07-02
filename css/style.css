@@ -186,49 +186,71 @@ ul{
 
 }
 
+html.dark-mode,
 body.dark-mode{
-    background:#0f172a;
-    color:#e5e7eb;
+    background:#0f172a !important;
+    color:#e5e7eb !important;
 }
 
-body.dark-mode .main,
-body.dark-mode .dashboard,
-body.dark-mode .form-page,
-body.dark-mode .tasks-page{
-    background:#0f172a;
+html.dark-mode body{
+    background:#0f172a !important;
 }
 
-body.dark-mode .sidebar,
-body.dark-mode .header,
-body.dark-mode .card,
-body.dark-mode .form-card,
-body.dark-mode .task-item,
-body.dark-mode .stat-card{
-    background:#111827;
-    color:#e5e7eb;
-    border-color:#334155;
+html.dark-mode .main,
+html.dark-mode .dashboard,
+html.dark-mode .form-page,
+html.dark-mode .tasks-page,
+html.dark-mode .sidebar,
+html.dark-mode .header{
+    background:#0f172a !important;
 }
 
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode label,
-body.dark-mode .breadcrumb strong{
-    color:#f9fafb;
+html.dark-mode .card,
+html.dark-mode .form-card,
+html.dark-mode .task-item,
+html.dark-mode .stat-card{
+    background:#111827 !important;
+    color:#e5e7eb !important;
+    border-color:#334155 !important;
 }
 
-body.dark-mode p,
-body.dark-mode .breadcrumb,
-body.dark-mode .form-title p,
-body.dark-mode .task-info p{
-    color:#9ca3af;
+html.dark-mode h1,
+html.dark-mode h2,
+html.dark-mode h3,
+html.dark-mode h4,
+html.dark-mode label,
+html.dark-mode .breadcrumb strong{
+    color:#f9fafb !important;
 }
 
-body.dark-mode .input,
-body.dark-mode .textarea,
-body.dark-mode .select,
-body.dark-mode .search-box{
-    background:#1f2937;
-    color:#f9fafb;
-    border-color:#334155;
+html.dark-mode p,
+html.dark-mode span,
+html.dark-mode .breadcrumb,
+html.dark-mode .form-title p,
+html.dark-mode .task-info p{
+    color:#cbd5e1 !important;
+}
+
+html.dark-mode .input,
+html.dark-mode .textarea,
+html.dark-mode .select,
+html.dark-mode .search-box{
+    background:#1f2937 !important;
+    color:#f9fafb !important;
+    border-color:#334155 !important;
+}
+
+html.dark-mode .menu a{
+    color:#cbd5e1 !important;
+}
+
+html.dark-mode .menu a.active{
+    background:#312e81 !important;
+    color:#ffffff !important;
+}
+
+html.dark-mode .btn-secondary{
+    background:#1f2937 !important;
+    color:#f9fafb !important;
+    border-color:#334155 !important;
 }
