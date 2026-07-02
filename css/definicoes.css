@@ -1,0 +1,131 @@
+.settings-page{
+    display:flex;
+    justify-content:center;
+}
+
+.settings-card{
+    width:100%;
+    max-width:920px;
+}
+
+.settings-section{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:22px;
+    box-shadow:var(--shadow-sm);
+}
+
+.settings-section-title{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:18px;
+}
+
+.settings-section-title i{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--primary-light);
+    color:var(--primary);
+    font-size:18px;
+    flex-shrink:0;
+}
+
+.settings-section-title h3{
+    font-size:20px;
+    font-weight:800;
+    margin-bottom:4px;
+}
+
+.settings-section-title p,
+.settings-row p{
+    color:var(--gray-500);
+    font-size:14px;
+}
+
+.settings-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:22px;
+    padding:16px 0;
+    border-top:1px solid var(--gray-200);
+}
+
+.settings-row:first-of-type{
+    border-top:none;
+}
+
+.settings-row strong{
+    font-size:15px;
+    font-weight:800;
+}
+
+.settings-row input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    accent-color:var(--primary);
+    flex-shrink:0;
+}
+
+.settings-select{
+    max-width:230px;
+}
+
+.settings-actions-left{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.danger-zone{
+    background:#fff1f2;
+    border-color:#fecdd3;
+}
+
+.danger-title i{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.danger-title h3{
+    color:#991b1b;
+}
+
+.settings-final-actions{
+    margin-top:28px;
+}
+
+html.dark-mode .settings-section{
+    background:#111827 !important;
+    border-color:#334155 !important;
+}
+
+html.dark-mode .settings-section-title p,
+html.dark-mode .settings-row p{
+    color:#94a3b8 !important;
+}
+
+html.dark-mode .settings-row{
+    border-color:#334155 !important;
+}
+
+html.dark-mode .danger-zone{
+    background:#2a1217 !important;
+    border-color:#7f1d1d !important;
+}
+
+html.dark-mode .danger-title i{
+    background:#7f1d1d !important;
+    color:#fecaca !important;
+}
+
+html.dark-mode .danger-title h3{
+    color:#fecaca !important;
+}

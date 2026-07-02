@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/definicoes.css">
     <link rel="stylesheet" href="css/responsive.css">
 </head>
 
@@ -42,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <?php include "includes/header.php"; ?>
 
-        <section class="form-page">
+        <section class="form-page settings-page">
 
-            <div class="form-card card">
+            <div class="form-card card settings-card">
 
                 <div class="form-title">
                     <h1>Definições</h1>
@@ -67,101 +68,169 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <form method="POST">
 
-                    <h3><i class="fa-solid fa-palette"></i> Aparência</h3>
+                    <div class="settings-section">
+                        <div class="settings-section-title">
+                            <i class="fa-solid fa-palette"></i>
+                            <div>
+                                <h3>Aparência</h3>
+                                <p>Escolhe o tema visual da aplicação.</p>
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Tema</label>
-                        <select class="select" name="tema">
-                            <option value="claro">Claro</option>
-                            <option value="escuro">Escuro</option>
-                        </select>
+                        <div class="settings-row">
+                            <div>
+                                <strong>Tema</strong>
+                                <p>Aplica o tema claro ou escuro.</p>
+                            </div>
+
+                            <select class="select settings-select" name="tema">
+                                <option value="claro">Claro</option>
+                                <option value="escuro">Escuro</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <hr>
+                    <div class="settings-section">
+                        <div class="settings-section-title">
+                            <i class="fa-solid fa-bell"></i>
+                            <div>
+                                <h3>Notificações</h3>
+                                <p>Controla os avisos da aplicação.</p>
+                            </div>
+                        </div>
 
-                    <h3><i class="fa-solid fa-bell"></i> Notificações</h3>
+                        <label class="settings-row">
+                            <div>
+                                <strong>Receber notificações</strong>
+                                <p>Permite receber avisos gerais.</p>
+                            </div>
+                            <input type="checkbox" name="notificacoes" checked>
+                        </label>
 
-                    <div class="form-group">
-                        <label><input type="checkbox" name="notificacoes" checked> Receber notificações</label>
+                        <label class="settings-row">
+                            <div>
+                                <strong>Avisar tarefas em atraso</strong>
+                                <p>Mostra avisos quando uma tarefa ultrapassa a data limite.</p>
+                            </div>
+                            <input type="checkbox" name="tarefas_atrasadas" checked>
+                        </label>
+
+                        <label class="settings-row">
+                            <div>
+                                <strong>Avisar tarefas para hoje</strong>
+                                <p>Mostra avisos das tarefas com prazo no dia atual.</p>
+                            </div>
+                            <input type="checkbox" name="tarefas_hoje">
+                        </label>
                     </div>
 
-                    <div class="form-group">
-                        <label><input type="checkbox" name="tarefas_atrasadas" checked> Avisar tarefas em atraso</label>
+                    <div class="settings-section">
+                        <div class="settings-section-title">
+                            <i class="fa-solid fa-list-check"></i>
+                            <div>
+                                <h3>Tarefas</h3>
+                                <p>Define como as tarefas aparecem na aplicação.</p>
+                            </div>
+                        </div>
+
+                        <label class="settings-row">
+                            <div>
+                                <strong>Mostrar tarefas concluídas</strong>
+                                <p>Inclui tarefas concluídas no Dashboard.</p>
+                            </div>
+                            <input type="checkbox" name="mostrar_concluidas" checked>
+                        </label>
+
+                        <label class="settings-row">
+                            <div>
+                                <strong>Confirmar antes de apagar</strong>
+                                <p>Pede confirmação antes de eliminar uma tarefa.</p>
+                            </div>
+                            <input type="checkbox" name="confirmar_apagar" checked>
+                        </label>
+
+                        <div class="settings-row">
+                            <div>
+                                <strong>Tarefas por página</strong>
+                                <p>Quantidade de tarefas mostradas por página.</p>
+                            </div>
+
+                            <select class="select settings-select" name="tarefas_por_pagina">
+                                <option value="10">10 tarefas</option>
+                                <option value="20">20 tarefas</option>
+                                <option value="50">50 tarefas</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label><input type="checkbox" name="tarefas_hoje"> Avisar tarefas para hoje</label>
+                    <div class="settings-section">
+                        <div class="settings-section-title">
+                            <i class="fa-solid fa-gear"></i>
+                            <div>
+                                <h3>Aplicação</h3>
+                                <p>Define o comportamento geral da aplicação.</p>
+                            </div>
+                        </div>
+
+                        <div class="settings-row">
+                            <div>
+                                <strong>Página inicial após login</strong>
+                                <p>Escolhe a primeira página depois de entrar.</p>
+                            </div>
+
+                            <select class="select settings-select" name="pagina_inicial">
+                                <option value="dashboard">Dashboard</option>
+                                <option value="tarefas">Tarefas</option>
+                            </select>
+                        </div>
+
+                        <label class="settings-row">
+                            <div>
+                                <strong>Mostrar estatísticas</strong>
+                                <p>Mostra os cartões de estatísticas no Dashboard.</p>
+                            </div>
+                            <input type="checkbox" name="mostrar_stats" checked>
+                        </label>
                     </div>
 
-                    <hr>
+                    <div class="settings-section">
+                        <div class="settings-section-title">
+                            <i class="fa-solid fa-lock"></i>
+                            <div>
+                                <h3>Segurança</h3>
+                                <p>Opções relacionadas com a conta.</p>
+                            </div>
+                        </div>
 
-                    <h3><i class="fa-solid fa-list-check"></i> Tarefas</h3>
+                        <div class="settings-actions-left">
+                            <a href="perfil.php" class="btn btn-secondary">
+                                <i class="fa-solid fa-key"></i>
+                                Alterar Palavra-passe
+                            </a>
 
-                    <div class="form-group">
-                        <label><input type="checkbox" name="mostrar_concluidas" checked> Mostrar tarefas concluídas no Dashboard</label>
+                            <a href="logout.php" class="btn btn-secondary">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Terminar Sessão
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label><input type="checkbox" name="confirmar_apagar" checked> Confirmar antes de apagar tarefas</label>
+                    <div class="settings-section danger-zone">
+                        <div class="settings-section-title danger-title">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <div>
+                                <h3>Zona de Perigo</h3>
+                                <p>Esta ação é permanente. A conta e as tarefas associadas serão removidas.</p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-danger" onclick="return confirm('Tens a certeza que queres eliminar a conta?')">
+                            <i class="fa-solid fa-trash"></i>
+                            Eliminar Conta
+                        </button>
                     </div>
 
-                    <div class="form-group">
-                        <label>Tarefas por página</label>
-                        <select class="select" name="tarefas_por_pagina">
-                            <option value="10">10 tarefas</option>
-                            <option value="20">20 tarefas</option>
-                            <option value="50">50 tarefas</option>
-                        </select>
-                    </div>
-
-                    <hr>
-
-                    <h3><i class="fa-solid fa-gear"></i> Aplicação</h3>
-
-                    <div class="form-group">
-                        <label>Página inicial após login</label>
-                        <select class="select" name="pagina_inicial">
-                            <option value="dashboard">Dashboard</option>
-                            <option value="tarefas">Tarefas</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label><input type="checkbox" name="mostrar_stats" checked> Mostrar estatísticas no Dashboard</label>
-                    </div>
-
-                    <hr>
-
-                    <h3><i class="fa-solid fa-lock"></i> Segurança</h3>
-
-                    <div class="form-actions" style="justify-content:flex-start;">
-                        <a href="perfil.php" class="btn btn-secondary">
-                            <i class="fa-solid fa-key"></i>
-                            Alterar Palavra-passe
-                        </a>
-
-                        <a href="logout.php" class="btn btn-secondary">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Terminar Sessão
-                        </a>
-                    </div>
-
-                    <hr>
-
-                    <h3 style="color:#991B1B;"><i class="fa-solid fa-triangle-exclamation"></i> Zona de Perigo</h3>
-
-                    <div class="form-group">
-                        <p style="color:var(--gray-500); font-size:14px;">
-                            Esta ação é permanente. A conta e as tarefas associadas serão removidas.
-                        </p>
-                    </div>
-
-                    <button type="button" class="btn btn-danger" onclick="return confirm('Tens a certeza que queres eliminar a conta?')">
-                        <i class="fa-solid fa-trash"></i>
-                        Eliminar Conta
-                    </button>
-
-                    <div class="form-actions">
+                    <div class="form-actions settings-final-actions">
                         <a href="dashboard.php" class="btn btn-secondary">Cancelar</a>
 
                         <button type="submit" class="btn btn-primary">
@@ -182,8 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 </div>
 
-<script src="js/tema.js"></script>
 <script src="js/menu.js"></script>
+<script src="js/tema.js"></script>
 </body>
 </html>
-

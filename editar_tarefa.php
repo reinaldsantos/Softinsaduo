@@ -191,5 +191,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </div>
 
 <script src="js/menu.js"></script>
+<script src="js/tema.js"></script>
 </body>
 </html>

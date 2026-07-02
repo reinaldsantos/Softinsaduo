@@ -1,18 +1,21 @@
-const temaSelect = document.querySelector('select[name="tema"]');
+document.addEventListener("DOMContentLoaded", () => {
+    const temaGuardado = localStorage.getItem("tema") || "claro";
 
-if (temaSelect) {
-    const temaGuardado = localStorage.getItem("tema");
+    document.documentElement.classList.toggle("dark-mode", temaGuardado === "escuro");
+    document.body.classList.toggle("dark-mode", temaGuardado === "escuro");
 
-    if (temaGuardado) {
+    const temaSelect = document.querySelector('select[name="tema"]');
+
+    if (temaSelect) {
         temaSelect.value = temaGuardado;
-        document.body.classList.toggle("dark-mode", temaGuardado === "escuro");
+
+        temaSelect.addEventListener("change", () => {
+            const tema = temaSelect.value;
+
+            localStorage.setItem("tema", tema);
+
+            document.documentElement.classList.toggle("dark-mode", tema === "escuro");
+            document.body.classList.toggle("dark-mode", tema === "escuro");
+        });
     }
-
-    temaSelect.addEventListener("change", () => {
-        const tema = temaSelect.value;
-
-        localStorage.setItem("tema", tema);
-
-        document.body.classList.toggle("dark-mode", tema === "escuro");
-    });
-}
+});
