@@ -215,19 +215,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </div>
                     </div>
 
+                    <!-- ZONA DE PERIGO -->
                     <div class="settings-section danger-zone">
                         <div class="settings-section-title danger-title">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <div>
-                                <h3>Zona de Perigo</h3>
+                                <h3 style="color:#DC2626;">Zona de Perigo</h3>
                                 <p>Esta ação é permanente. A conta e as tarefas associadas serão removidas.</p>
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-danger" onclick="return confirm('Tens a certeza que queres eliminar a conta?')">
+                        <a href="eliminar_conta.php" class="btn btn-danger">
                             <i class="fa-solid fa-trash"></i>
                             Eliminar Conta
-                        </button>
+                        </a>
                     </div>
 
                     <div class="form-actions settings-final-actions">

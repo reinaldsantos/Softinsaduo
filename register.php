@@ -28,7 +28,7 @@ if (is_dir($pasta_avatars)) {
     }
 }
 if (empty($avatares)) {
-    $avatares = ['avatar1.png', 'avatar2.png', 'avatar3.png', 'avatar4.png', 'avatar5.png'];
+    $avatares = ['avatar1.jpeg', 'avatar2.webp', 'avatar3.jpeg', 'avatar4.jpeg', 'avatar5.jpeg'];
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -91,7 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } elseif ($tipo_avatar === 'camera') {
                 // Foto da câmera (dados base64)
                 if (!empty($foto_camera)) {
-                    // Remover o cabeçalho "data:image/png;base64,"
                     $dados_foto = str_replace('data:image/png;base64,', '', $foto_camera);
                     $dados_foto = str_replace(' ', '+', $dados_foto);
                     $dados_decodificados = base64_decode($dados_foto);
@@ -110,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // Se não tiver avatar, usar o primeiro da galeria
             if (empty($avatar)) {
-                $avatar = $avatares[0] ?? 'avatar1.png';
+                $avatar = $avatares[0] ?? 'avatar1.jpeg';
                 $avatar_type = 'default';
             }
 
@@ -119,9 +118,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bind_param("sssss", $nome, $email, $senha_hash, $avatar, $avatar_type);
 
             if ($stmt->execute()) {
-                $sucesso = "Conta criada com sucesso. Já podes fazer login.";
-                $nome = "";
-                $email = "";
+                // 🔥 PEGAR O ID DO UTILIZADOR CRIADO
+                $user_id = $conn->insert_id;
+                
+                // 🔥 CRIAR SESSÃO AUTOMATICAMENTE
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['nome'] = $nome;
+                $_SESSION['email'] = $email;
+                
+                // 🔥 REDIRECIONAR DIRETO PARA O DASHBOARD
+                header("Location: dashboard.php");
+                exit();
             } else {
                 $erro = "Erro ao criar conta. Tenta novamente.";
             }

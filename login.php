@@ -10,7 +10,13 @@ require_once "includes/auth.php";
 redirecionarSeLogado();
 
 $erro = "";
+$sucesso = "";
 $email = "";
+
+// Verificar se a conta foi eliminada
+if (isset($_GET['conta_eliminada']) && $_GET['conta_eliminada'] == 1) {
+    $sucesso = "A tua conta foi eliminada com sucesso.";
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -81,6 +87,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <div class="alert-error">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <?php echo htmlspecialchars($erro); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($sucesso): ?>
+            <div class="alert-success">
+                <i class="fa-solid fa-circle-check"></i>
+                <?php echo htmlspecialchars($sucesso); ?>
             </div>
         <?php endif; ?>
 
